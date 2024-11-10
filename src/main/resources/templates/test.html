@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cookie Test</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Cookie Test Page</h1>
+
+    <button id="create">Create Cookie</button>
+    <button id="get">Get Cookie</button>
+    <button id="getAll">Get All Cookies</button>
+    <button id="delete">Delete Cookie</button>
+
+    <p id="result"></p>
+
+    <script>
+        $(document).ready(function() {
+            $('#create').click(function() {
+                $.get("/create-cookie", function(data) {
+                    $('#result').text(data);
+                });
+            });
+
+            $('#get').click(function() {
+                $.get("/get-cookie", function(data) {
+                    $('#result').text(data);
+                });
+            });
+
+            $('#getAll').click(function() {
+                $.get("/get-all-cookies", function(data) {
+                    $('#result').text(data);
+                });
+            });
+
+            $('#delete').click(function() {
+                $.get("/deleteCookie", function(data) {
+                    $('#result').text(data);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
