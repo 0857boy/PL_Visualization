@@ -1,21 +1,56 @@
 # PL Visualization Project
 
-這是一個使用 Spring Boot 和 Maven 的專案，旨在進行程式語言的視覺化分析。
+## 心智圖
+![XMIND](/IMGS/XMIND.png)
 
-## 主要功能
+## 主題
+- 語法樹生成與動態執行進度顯示
 
-- **DemoApplication**: 主應用程式入口，位於 [`DemoApplication.java`](src/main/java/com/pl_visualization_project/demo/DemoApplication.java)。
-- **DemoController**: 控制器，處理 HTTP 請求，位於 [`DemoController.java`](src/main/java/com/pl_visualization_project/demo/DemoController.java)。
-- **Parser**: LL(1) 文法分析器，位於 [`Parser.java`](src/main/java/cycuice/sourceAnalyzer/parser/Parser.java)。
-- **STree**: 樹結構，位於 [`STree.java`](src/main/java/cycuice/sourceAnalyzer/stree/STree.java)。
-- **Lexer**: 字元分析器，位於 [`Lexer.java`](src/main/java/cycuice/sourceAnalyzer/lexer/Lexer.java)。
-- **PrettyPrintable**: 格式化輸出介面，位於 [`PrettyPrintable.java`](src/main/java/cycuice/sourceAnalyzer/common/PrettyPrintable.java)。
-- **DevelopingException**: 自訂例外，位於 [`DevelopingException.java`](src/main/java/cycuice/sourceAnalyzer/customException/DevelopingException.java)。
+## 功能
+1. **語法樹生成**
+   - 支援多種程式語言
+   - 動態生成樹結構，並以 JSON 格式傳遞
+   - 前端使用 D3.js 或 Cytoscape.js 顯示樹結構
+
+2. **程式執行進度追蹤**
+   - 逐行執行程式碼
+   - 動態高亮執行行號
+   - 同步高亮語法樹節點
+
+3. **動態互動**
+   - 支援暫停與繼續執行
+   - 即時顯示執行狀態（如目前行號或錯誤訊息）
+
+## 架構
+1. **前端**
+   - 技術：React.js / Vue.js + D3.js
+   - 功能：
+     - 程式碼編輯器 (Monaco Editor)
+     - 語法樹視覺化
+     - 行號高亮
+     - 節點互動
+
+2. **後端**
+   - 技術：Flask + WebSocket
+   - 功能：
+     - 語法樹解析模組 (ANTLR, AST)
+     - 程式碼執行模組
+     - 動態數據回傳
+
+3. **執行模組**
+   - 語法解析：AST 模組
+   - 執行器：逐行執行程式碼，並回報行號
+
+4. **通信模組**
+   - 技術：WebSocket
+   - 功能：
+     - 連接前後端
+     - 實時回傳執行進度
 
 ## 流程
-1. 使用者將程式碼提交至前端介面。
-2. 後端的 DemoController 接收請求，並依序經過 Lexer 和 Parser 解析。
-3. 解析後的語法樹（STree）經過 PrettyPrintable 格式化，並返回給前端。
-4. 前端將視覺化結果呈現給使用者，使其可以查看程式碼的語法結構。
-
-
+1. 用戶輸入程式碼，選擇程式語言
+2. 前端發送請求至後端 `/parse` 接口
+3. 後端生成語法樹並回傳
+4. 用戶點擊執行，前端發送請求至 `/execute`
+5. 後端逐行執行程式碼，並即時回報行號
+6. 前端根據行號動態高亮語法樹與行號
