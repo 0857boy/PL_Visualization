@@ -3,6 +3,10 @@
 ## 心智圖
 ![XMIND](/IMGS/XMIND.png)
 
+## 項目結構
+<!-- PROJECT TREE START -->
+<!-- PROJECT TREE END -->
+
 ## 主題
 - 使用 React 與 React Flow 開發的語法樹生成與執行進度顯示應用
 
