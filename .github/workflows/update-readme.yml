@@ -30,6 +30,7 @@ jobs:
       id: update-readme
       run: |
         python update_readme.py > changes.log
+        cat changes.log
         if grep -q "README.md updated" changes.log; then
           echo "has_changes=true" >> $GITHUB_ENV
         else
