@@ -5,6 +5,8 @@ def generate_tree_structure(base_dir, prefix=""):
     # 生成目錄結構
     tree = []
     for item in sorted(os.listdir(base_dir)):
+        if item.startswith('.'):
+            continue  # 省略以 . 開頭的檔案和目錄
         path = os.path.join(base_dir, item)
         if os.path.isdir(path):
             tree.append(f"{prefix}├── {item}")
