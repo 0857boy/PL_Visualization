@@ -28,13 +28,13 @@ jobs:
       run: |
         python update_readme.py > changes.log
         if grep -q "README.md updated" changes.log; then
-          echo "::set-output name=has_changes::true"
+          echo "has_changes=true" >> $GITHUB_ENV
         else
-          echo "::set-output name=has_changes::false"
+          echo "has_changes=false" >> $GITHUB_ENV
         fi
 
     - name: Commit and push changes
-      if: steps.update-readme.outputs.has_changes == 'true'
+      if: env.has_changes == 'true'
       run: |
         git config --local user.name "github-actions[bot]"
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
