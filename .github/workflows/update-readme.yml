@@ -3,6 +3,51 @@ name: Update README
 on:
   push:
     branches:
+      - main  # 在 main 分支更新時執行
+      - Test  # 在 Test 分支更新時執行
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.9"
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt || true
+
+    - name: Generate project tree and check for changes
+      id: update-readme
+      run: |
+        python update_readme.py > changes.log
+        if grep -q "README.md updated" changes.log; then
+          echo "has_changes=true" >> $GITHUB_ENV
+        else
+          echo "has_changes=false" >> $GITHUB_ENV
+        fi
+
+    - name: Amend and push changes
+      if: env.has_changes == 'true'
+      run: |
+        git config --local user.name "github-actions[bot]"
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        diff_summary=$(tail -n +2 changes.log)
+        git add README.md
+        git commit --amend -m "$(git log -1 --pretty=%B)" -m "$diff_summary"
+        git push --force
+
+name: Update README
+
+on:
+  push:
+    branches:
       - main  # 監控 main 分支
       - Test  # 監控 Test 分支
 
