@@ -1,6 +1,8 @@
 import os
+import difflib
 
 def generate_tree_structure(base_dir, prefix=""):
+    # 生成目錄結構
     tree = []
     for item in sorted(os.listdir(base_dir)):
         path = os.path.join(base_dir, item)
@@ -11,28 +13,56 @@ def generate_tree_structure(base_dir, prefix=""):
             tree.append(f"{prefix}├── {item}")
     return tree
 
-def update_readme(project_root):
-    readme_path = os.path.join(project_root, "README.md")
-    tree_structure = "\n".join(generate_tree_structure(project_root))
-    
+def read_current_structure(readme_path):
+    # 讀取現有 README 中的項目結構
     with open(readme_path, "r", encoding="utf-8") as file:
         content = file.readlines()
-    
-    # Replace section marked for project tree
     start_marker = "<!-- PROJECT TREE START -->"
     end_marker = "<!-- PROJECT TREE END -->"
     start_idx = content.index(start_marker + "\n")
     end_idx = content.index(end_marker + "\n")
-    
+    return content[start_idx + 2 : end_idx - 1]
+
+def update_readme(project_root):
+    # 更新 README 並返回變更摘要
+    readme_path = os.path.join(project_root, "README.md")
+    tree_structure = "\n".join(generate_tree_structure(project_root))
+    current_structure = "".join(read_current_structure(readme_path))
+
+    # 比較現有結構與新結構
+    if current_structure == tree_structure:
+        return None  # 沒有變化
+
+    # 計算變更內容
+    diff = difflib.unified_diff(
+        current_structure.splitlines(),
+        tree_structure.splitlines(),
+        lineterm=""
+    )
+    diff_summary = "\n".join(diff)
+
+    # 更新 README
+    with open(readme_path, "r", encoding="utf-8") as file:
+        content = file.readlines()
+    start_marker = "<!-- PROJECT TREE START -->"
+    end_marker = "<!-- PROJECT TREE END -->"
+    start_idx = content.index(start_marker + "\n")
+    end_idx = content.index(end_marker + "\n")
     updated_content = (
         content[:start_idx + 1]
         + ["\n```\n"] + [tree_structure] + ["\n```\n"]
         + content[end_idx:]
     )
-    
     with open(readme_path, "w", encoding="utf-8") as file:
         file.writelines(updated_content)
 
+    return diff_summary  # 返回變更摘要
+
 if __name__ == "__main__":
     project_root = os.path.dirname(os.path.abspath(__file__))
-    update_readme(project_root)
+    changes = update_readme(project_root)
+    if changes:
+        print("README.md updated with the following changes:")
+        print(changes)
+    else:
+        print("No changes detected.")
