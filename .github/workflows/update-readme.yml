@@ -28,17 +28,17 @@ jobs:
       run: |
         python update_readme.py > changes.log
         if grep -q "README.md updated" changes.log; then
-          echo "has_changes=true" >> $GITHUB_ENV
+          echo "::set-output name=has_changes::true"
         else
-          echo "has_changes=false" >> $GITHUB_ENV
+          echo "::set-output name=has_changes::false"
         fi
 
     - name: Commit and push changes
-      if: env.has_changes == 'true'
+      if: steps.update-readme.outputs.has_changes == 'true'
       run: |
         git config --local user.name "github-actions[bot]"
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         diff_summary=$(tail -n +2 changes.log)
-        git add README.md changes.log
+        git add README.md
         git commit -m "Update README with project structure changes" -m "$diff_summary"
         git push
