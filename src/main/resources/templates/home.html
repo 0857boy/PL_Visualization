@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+    <script src="https://kit.fontawesome.com/f0601b0fb2.js" crossorigin="anonymous"></script>
+    <script type='module' src='https://unpkg.com/ionicons@5.0.0/dist/ionicons/ionicons.esm.js'></script>
+    <script nomodule='' src='https://unpkg.com/ionicons@5.0.0/dist/ionicons/ionicons.js'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" href="css/menu.css">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,600,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+
+</head>
+
+<body>
+    <div id="title-section">
+        <div id="title-section">
+            <h1
+                style="color: #797979; font-size: 64px; font-weight: bold; text-align: center; font-family: 'Arial', sans-serif;  padding: 10px; text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);">
+                PL Virtualization</h1>
+        </div>
+
+    </div>
+    <div id="main">
+        <div id="debug-section" class="section">
+            <div class="sub-section-title">Debug
+                <i id="debug-icon" class="fas fa-chevron-down toggle-icon"></i>
+            </div>
+            <div id="debug-sub-section" class="sub-section">
+                <!-- sub-section content -->
+            </div>
+            <div class="resizer vertical-resizer"></div>
+            <div class="sub-section-title">Terminal
+                <i id="terminal-icon" class="fas fa-chevron-down toggle-icon"></i>
+            </div>
+            <div id="terminal-sub-section" class="sub-section">
+                <!-- sub-section content -->
+            </div>
+        </div>
+        <div class="resizer horizontal-resizer"></div>
+        <div id="code-section" class="section">
+            <div id="editor"></div>
+        </div>
+        <div class="resizer horizontal-resizer"></div>
+        <div id="graph-section" class="section">
+            <div id="graph-section" class="section">
+                <div style="overflow: hidden;" id="btree"></div>
+            </div>
+        </div>
+    </div>
+    <script src="js/script.js"></script>
+    <script src="js/post.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/3.3.3/gsap.min.js'></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="js/tree.js" type="text/javascript" charset="utf-8"></script>
+
+</body>
+
+
+</html>
