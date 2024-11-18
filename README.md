@@ -55,8 +55,7 @@
 5. 用戶點擊「執行」，前端發送請求至 `/execute`
 6. 後端逐行執行程式碼，透過 WebSocket 即時回報行號
 7. 前端根據行號高亮語法樹節點與程式碼行號
-test
+
 ## 項目結構
 <!-- PROJECT TREE START -->
-
 <!-- PROJECT TREE END -->
