@@ -55,76 +55,8 @@
 5. 用戶點擊「執行」，前端發送請求至 `/execute`
 6. 後端逐行執行程式碼，透過 WebSocket 即時回報行號
 7. 前端根據行號高亮語法樹節點與程式碼行號
-test
+
 ## 項目結構
 <!-- PROJECT TREE START -->
 
-```
-├── IMGS
-│   ├── XMIND.png
-├── README.md
-├── changes.log
-├── mvnw
-├── mvnw.cmd
-├── pom.xml
-├── src
-│   ├── main
-│   │   ├── java
-│   │   │   ├── com
-│   │   │   │   ├── pl_visualization_project
-│   │   │   │   │   ├── demo
-│   │   │   │   │   │   ├── DemoApplication.java
-│   │   │   │   │   │   ├── DemoController.java
-│   │   │   ├── cycuice
-│   │   │   │   ├── sourceAnalyzer
-│   │   │   │   │   ├── AnalysisResult.java
-│   │   │   │   │   ├── SourceAnalyzer.java
-│   │   │   │   │   ├── common
-│   │   │   │   │   │   ├── Indexable.java
-│   │   │   │   │   │   ├── JSONStringifyable.java
-│   │   │   │   │   │   ├── Nameable.java
-│   │   │   │   │   │   ├── PrettyPrintable.java
-│   │   │   │   │   ├── customException
-│   │   │   │   │   │   ├── CustomException.java
-│   │   │   │   │   │   ├── DevelopingException.java
-│   │   │   │   │   ├── lexer
-│   │   │   │   │   │   ├── Lexer.java
-│   │   │   │   │   │   ├── Token.java
-│   │   │   │   │   │   ├── TokenType.java
-│   │   │   │   │   │   ├── TokenizeResult.java
-│   │   │   │   │   ├── parser
-│   │   │   │   │   │   ├── ParseResult.java
-│   │   │   │   │   │   ├── Parser.java
-│   │   │   │   │   ├── signal
-│   │   │   │   │   │   ├── EOFSignal.java
-│   │   │   │   │   │   ├── EndOfLineSignal.java
-│   │   │   │   │   │   ├── Signal.java
-│   │   │   │   │   │   ├── StaticErrorSignal.java
-│   │   │   │   │   ├── stree
-│   │   │   │   │   │   ├── SNode.java
-│   │   │   │   │   │   ├── SNodeType.java
-│   │   │   │   │   │   ├── STree.java
-│   │   │   │   │   │   ├── STreeBuilder.java
-│   │   ├── resources
-│   │   │   ├── application.properties
-│   │   │   ├── static
-│   │   │   │   ├── css
-│   │   │   │   │   ├── menu.css
-│   │   │   │   │   ├── style.css
-│   │   │   │   ├── js
-│   │   │   │   │   ├── post.js
-│   │   │   │   │   ├── script.js
-│   │   │   │   │   ├── tree.js
-│   │   │   ├── templates
-│   │   │   │   ├── home.html
-│   │   │   │   ├── index.html
-│   │   │   │   ├── test.html
-│   ├── test
-│   │   ├── java
-│   │   │   ├── com
-│   │   │   │   ├── pl_visualization_project
-│   │   │   │   │   ├── demo
-│   │   │   │   │   │   ├── DemoApplicationTests.java
-├── update_readme.py
-```
 <!-- PROJECT TREE END -->
