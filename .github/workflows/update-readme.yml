@@ -28,9 +28,9 @@ jobs:
       run: |
         python update_readme.py > changes.log
         if grep -q "README.md updated" changes.log; then
-          echo "has_changes=true" >> $GITHUB_ENV
+          echo "::set-output name=has_changes::true"
         else
-          echo "has_changes=false" >> $GITHUB_ENV
+          echo "::set-output name=has_changes::false"
         fi
 
     - name: Commit and push changes
