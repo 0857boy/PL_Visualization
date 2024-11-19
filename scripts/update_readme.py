@@ -5,15 +5,16 @@ def generate_tree_structure(base_dir, prefix=""):
     # 生成目錄結構
     tree = []
     items = sorted(os.listdir(base_dir))
-    for item in items:
+    for index, item in enumerate(items):
         if item.startswith('.'):
             continue  # 省略以 . 開頭的檔案
         path = os.path.join(base_dir, item)
+        connector = "└──" if index == len(items) - 1 else "├──"
         if os.path.isdir(path):
-            tree.append(f"{prefix}├── {item}")
-            tree += generate_tree_structure(path, prefix + "│   ")
+            tree.append(f"{prefix}{connector} {item}")
+            tree += generate_tree_structure(path, prefix + ("    " if connector == "└──" else "│   "))
         else:
-            tree.append(f"{prefix}├── {item}")
+            tree.append(f"{prefix}{connector} {item}")
     return tree
 
 def read_current_structure(readme_path):
