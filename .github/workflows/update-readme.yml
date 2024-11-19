@@ -39,21 +39,21 @@ jobs:
         echo "has_changes=$has_changes"
 
     - name: Upload changes log
-      if: env.has_changes == 'true'
+      if: env.has_changes == true
       uses: actions/upload-artifact@v4
       with:
         name: changes-log
         path: changes.log
 
     - name: Download changes log
-      if: env.has_changes == 'true'
+      if: env.has_changes == true
       uses: actions/download-artifact@v4
       with:
         name: changes-log
         path: .
 
     - name: Commit and push changes
-      if: env.has_changes == 'true'
+      if: env.has_changes == true
       run: |
         git config --local user.name "github-actions[bot]"
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
