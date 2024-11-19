@@ -10,10 +10,10 @@ def generate_tree_structure(base_dir, prefix=""):
             continue  # 省略以 . 開頭的檔案和 update_readme.py
         path = os.path.join(base_dir, item)
         if os.path.isdir(path):
-            tree.append(f"{prefix}- {item}")
-            tree += generate_tree_structure(path, prefix + "  ")
+            tree.append(f"{prefix}├── {item}")
+            tree += generate_tree_structure(path, prefix + "│   ")
         else:
-            tree.append(f"{prefix}- {item}")
+            tree.append(f"{prefix}├── {item}")
     return tree
 
 def read_current_structure(readme_path):
@@ -24,7 +24,7 @@ def read_current_structure(readme_path):
     end_marker = "<!-- PROJECT TREE END -->"
     start_idx = content.index(start_marker + "\n")
     end_idx = content.index(end_marker + "\n")
-    return [line.rstrip() for line in content[start_idx + 1 : end_idx]]
+    return [line.strip('`').rstrip() for line in content[start_idx + 1 : end_idx]]
 
 def update_readme(project_root):
     # 更新 README 並返回變更摘要
@@ -53,8 +53,8 @@ def update_readme(project_root):
     end_idx = content.index(end_marker + "\n")
     updated_content = (
         content[:start_idx + 1] +
-        [tree_structure + "\n"] +
-        content[end_idx:]
+        ["\n```\n"] + [tree_structure] + ["\n```\n"]
+        + content[end_idx:]
     )
     with open(readme_path, "w", encoding="utf-8") as file:
         file.writelines(updated_content)
