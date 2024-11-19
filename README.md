@@ -125,10 +125,5 @@
 │   │   │   │   ├── pl_visualization_project
 │   │   │   │   │   ├── demo
 │   │   │   │   │   │   ├── DemoApplicationTests.java
-``
-│   │   ├── com
-│   │   │   ├── pl_visualization_project
-│   │   │   │   ├── demo
-│   │   │   │   │   ├── DemoApplicationTests.class
 ```
 <!-- PROJECT TREE END -->
