@@ -34,7 +34,7 @@ jobs:
         fi
 
     - name: Commit and push changes
-      if: env.has_changes == true
+      if: env.has_changes == 'true'
       run: |
         git config --local user.name "github-actions[bot]"
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
