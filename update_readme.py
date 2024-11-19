@@ -52,8 +52,8 @@ def update_readme(project_root):
     start_idx = content.index(start_marker + "\n")
     end_idx = content.index(end_marker + "\n")
     updated_content = (
-        content[:start_idx + 1]
-        + [tree_structure] + ["\n"]
+        content[:start_idx + 1] +
+        ["\n```\n"] + [tree_structure] + ["\n```\n"]
         + content[end_idx:]
     )
     with open(readme_path, "w", encoding="utf-8") as file:
