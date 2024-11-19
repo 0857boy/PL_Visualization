@@ -36,6 +36,7 @@ jobs:
         else
           echo "has_changes=false" >> $GITHUB_ENV
         fi
+        echo "has_changes=$has_changes"
 
     - name: Upload changes log
       if: env.has_changes == 'true'
@@ -56,6 +57,7 @@ jobs:
       run: |
         git config --local user.name "github-actions[bot]"
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        cat changes.log
         diff_summary=$(tail -n +2 changes.log)
         git add README.md changes.log
         git commit -m "Update README with project structure changes" -m "$diff_summary"
