@@ -22,13 +22,12 @@ jobs:
     - name: Generate project tree and check for changes
       id: update-readme
       run: |
-        python update_readme.py > changes.log
+        python scripts/update_readme.py > changes.log
         if grep -q "README.md updated" changes.log; then
           echo "has_changes=true" >> $GITHUB_ENV
         else
           echo "has_changes=false" >> $GITHUB_ENV
-        fi
-
+        fi        
     - name: Commit and push changes
       if: env.has_changes == 'true'
       run: |
