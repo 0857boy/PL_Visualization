@@ -31,6 +31,10 @@ def update_readme(project_root):
     readme_path = os.path.join(project_root, "README.md")
     tree_structure = "\n".join(generate_tree_structure(project_root))
     current_structure = "\n".join(read_current_structure(readme_path))
+
+    # 比較現有結構與新結構
+    if current_structure.strip() == tree_structure.strip():
+        return None  # 沒有變化
     
     # 計算變更內容
     diff = difflib.unified_diff(
