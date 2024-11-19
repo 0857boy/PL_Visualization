@@ -19,9 +19,6 @@ jobs:
       with:
         python-version: "3.9"
 
-    - name: Debug Python version
-      run: python --version
-
     - name: Install dependencies
       run: |
         pip install -r requirements.txt || true
@@ -30,35 +27,18 @@ jobs:
       id: update-readme
       run: |
         python update_readme.py > changes.log
-        cat changes.log
         if grep -q "README.md updated" changes.log; then
           echo "has_changes=true" >> $GITHUB_ENV
         else
           echo "has_changes=false" >> $GITHUB_ENV
         fi
-        echo "has_changes=$has_changes"
-
-    - name: Upload changes log
-      if: env.has_changes == true
-      uses: actions/upload-artifact@v4
-      with:
-        name: changes-log
-        path: changes.log
-
-    - name: Download changes log
-      if: env.has_changes == true
-      uses: actions/download-artifact@v4
-      with:
-        name: changes-log
-        path: .
 
     - name: Commit and push changes
       if: env.has_changes == true
       run: |
         git config --local user.name "github-actions[bot]"
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
-        cat changes.log
         diff_summary=$(tail -n +2 changes.log)
-        git add README.md changes.log
+        git add README.md
         git commit -m "Update README with project structure changes" -m "$diff_summary"
         git push
