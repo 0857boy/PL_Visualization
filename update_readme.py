@@ -4,9 +4,10 @@ import difflib
 def generate_tree_structure(base_dir, prefix=""):
     # 生成目錄結構
     tree = []
-    for item in sorted(os.listdir(base_dir)):
-        if item.startswith('.'):
-            continue  # 省略以 . 開頭的檔案和目錄
+    items = sorted(os.listdir(base_dir))
+    for item in items:
+        if item.startswith('.') or item == "update_readme.py":
+            continue  # 省略以 . 開頭的檔案和 update_readme.py
         path = os.path.join(base_dir, item)
         if os.path.isdir(path):
             tree.append(f"{prefix}├── {item}")
@@ -23,18 +24,18 @@ def read_current_structure(readme_path):
     end_marker = "<!-- PROJECT TREE END -->"
     start_idx = content.index(start_marker + "\n")
     end_idx = content.index(end_marker + "\n")
-    return content[start_idx + 2 : end_idx - 1]
+    return [line.rstrip() for line in content[start_idx + 1 : end_idx]]
 
 def update_readme(project_root):
     # 更新 README 並返回變更摘要
     readme_path = os.path.join(project_root, "README.md")
     tree_structure = "\n".join(generate_tree_structure(project_root))
-    current_structure = "".join(read_current_structure(readme_path))
+    current_structure = "\n".join(read_current_structure(readme_path))
 
     # 比較現有結構與新結構
-    if current_structure == tree_structure:
+    if current_structure.strip() == tree_structure.strip():
         return None  # 沒有變化
-
+    
     # 計算變更內容
     diff = difflib.unified_diff(
         current_structure.splitlines(),
@@ -52,7 +53,7 @@ def update_readme(project_root):
     end_idx = content.index(end_marker + "\n")
     updated_content = (
         content[:start_idx + 1]
-        + ["\n```\n"] + [tree_structure] + ["\n```\n"]
+        + [tree_structure] + ["\n"]
         + content[end_idx:]
     )
     with open(readme_path, "w", encoding="utf-8") as file:

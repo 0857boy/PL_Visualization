@@ -19,10 +19,6 @@ jobs:
       with:
         python-version: "3.9"
 
-    - name: Install dependencies
-      run: |
-        pip install -r requirements.txt || true
-
     - name: Generate project tree and check for changes
       id: update-readme
       run: |
