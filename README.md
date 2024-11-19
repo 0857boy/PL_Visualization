@@ -67,6 +67,8 @@
 ├── mvnw
 ├── mvnw.cmd
 ├── pom.xml
+├── scripts
+│   ├── update_readme.py
 ├── src
 │   ├── main
 │   │   ├── java
@@ -125,5 +127,77 @@
 │   │   │   │   ├── pl_visualization_project
 │   │   │   │   │   ├── demo
 │   │   │   │   │   │   ├── DemoApplicationTests.java
+├── target
+│   ├── classes
+│   │   ├── application.properties
+│   │   ├── com
+│   │   │   ├── pl_visualization_project
+│   │   │   │   ├── demo
+│   │   │   │   │   ├── DemoApplication.class
+│   │   │   │   │   ├── DemoController.class
+│   │   ├── cycuice
+│   │   │   ├── sourceAnalyzer
+│   │   │   │   ├── AnalysisResult.class
+│   │   │   │   ├── SourceAnalyzer.class
+│   │   │   │   ├── common
+│   │   │   │   │   ├── Indexable.class
+│   │   │   │   │   ├── JSONStringifyable.class
+│   │   │   │   │   ├── Nameable.class
+│   │   │   │   │   ├── PrettyPrintable.class
+│   │   │   │   ├── customException
+│   │   │   │   │   ├── CustomException.class
+│   │   │   │   │   ├── DevelopingException.class
+│   │   │   │   ├── lexer
+│   │   │   │   │   ├── Lexer.class
+│   │   │   │   │   ├── Token.class
+│   │   │   │   │   ├── TokenType.class
+│   │   │   │   │   ├── TokenizeResult.class
+│   │   │   │   ├── parser
+│   │   │   │   │   ├── ParseResult.class
+│   │   │   │   │   ├── Parser$SyntaxNode.class
+│   │   │   │   │   ├── Parser$SyntaxNodeType.class
+│   │   │   │   │   ├── Parser.class
+│   │   │   │   ├── signal
+│   │   │   │   │   ├── EOFSignal.class
+│   │   │   │   │   ├── EndOfLineSignal.class
+│   │   │   │   │   ├── Signal.class
+│   │   │   │   │   ├── StaticErrorSignal.class
+│   │   │   │   ├── stree
+│   │   │   │   │   ├── SNode.class
+│   │   │   │   │   ├── SNodeType.class
+│   │   │   │   │   ├── STree$JSONTreeNode.class
+│   │   │   │   │   ├── STree.class
+│   │   │   │   │   ├── STreeBuilder.class
+│   │   ├── static
+│   │   │   ├── css
+│   │   │   │   ├── menu.css
+│   │   │   │   ├── style.css
+│   │   │   ├── js
+│   │   │   │   ├── post.js
+│   │   │   │   ├── script.js
+│   │   │   │   ├── tree.js
+│   │   ├── templates
+│   │   │   ├── home.html
+│   │   │   ├── index.html
+│   │   │   ├── test.html
+│   ├── generated-sources
+│   │   ├── annotations
+│   ├── generated-test-sources
+│   │   ├── test-annotations
+│   ├── maven-status
+│   │   ├── maven-compiler-plugin
+│   │   │   ├── compile
+│   │   │   │   ├── default-compile
+│   │   │   │   │   ├── createdFiles.lst
+│   │   │   │   │   ├── inputFiles.lst
+│   │   │   ├── testCompile
+│   │   │   │   ├── default-testCompile
+│   │   │   │   │   ├── createdFiles.lst
+│   │   │   │   │   ├── inputFiles.lst
+│   ├── test-classes
+│   │   ├── com
+│   │   │   ├── pl_visualization_project
+│   │   │   │   ├── demo
+│   │   │   │   │   ├── DemoApplicationTests.class
 ```
 <!-- PROJECT TREE END -->

@@ -6,8 +6,8 @@ def generate_tree_structure(base_dir, prefix=""):
     tree = []
     items = sorted(os.listdir(base_dir))
     for item in items:
-        if item.startswith('.') or item == "update_readme.py":
-            continue  # 省略以 . 開頭的檔案和 update_readme.py
+        if item.startswith('.'):
+            continue  # 省略以 . 開頭的檔案
         path = os.path.join(base_dir, item)
         if os.path.isdir(path):
             tree.append(f"{prefix}├── {item}")
@@ -62,7 +62,7 @@ def update_readme(project_root):
     return diff_summary  # 返回變更摘要
 
 if __name__ == "__main__":
-    project_root = os.path.dirname(os.path.abspath(__file__))
+    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # 指向專案根目錄
     changes = update_readme(project_root)
     if changes:
         print("README.md updated with the following changes:")
