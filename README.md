@@ -59,7 +59,7 @@
 ## 項目結構
 <!-- PROJECT TREE START -->
 
-`
+```
 ├── IMGS
 │   ├── XMIND.png
 ├── README.md
