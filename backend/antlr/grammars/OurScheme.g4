@@ -7,8 +7,8 @@ DOT : '.';
 QUOTE : '\'';
 COLON : ':';
 NUMBER : [0-9]+ ('.' [0-9]+)?; // 支援整數和浮點數
-STRING : '"' (~["\\] | '\\' .)* '"';
-SYMBOL : [a-zA-Z_][a-zA-Z0-9_-]*; // 符號或標識符
+STRING : '"' (~["\\] | '\\' .)* '"'; // 字串，允許空格
+SYMBOL : [a-zA-Z_][a-zA-Z0-9_]*; // 符號或標識符，不允許空格
 NIL : 'nil' | '#f';
 T : '#t';
 WS : [ \t\r\n]+ -> skip; // 跳過空白字符
@@ -35,8 +35,7 @@ atom
     ;
 
 list
-    : LEFT_PAREN expression* RIGHT_PAREN
-    | LEFT_PAREN expression+ DOT expression RIGHT_PAREN
+    : LEFT_PAREN (expression (DOT expression)?)* RIGHT_PAREN
     ;
 
 quotedExpression
