@@ -1,7 +1,7 @@
 # PL Visualization Project
 
-## 心智圖
-![XMIND](/IMGS/XMIND.png)
+## 流程圖
+![FlowChart](/IMGS/PL_Visualization_flowchart.png)
 
 ## 主題
 - 使用 React 與 React Flow 開發的語法樹生成與執行進度顯示應用
