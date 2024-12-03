@@ -32,10 +32,23 @@ wss.on('connection', (ws) => {
 
     let interpreter;
     let interpreterRunning = false;
-    let currentInterpreterType = null;
+    let currentInterpreterType = 'OurScheme'; // 預設解釋器類型
     let timeoutId = setTimeout(() => {
         ws.close();
     }, timeout);
+
+    // 啟動解釋器
+    interpreter = spawn('sh', ['-c', `ulimit -v ${memoryLimit}; ./InterpreterOurScheme`]);
+    interpreterRunning = true;
+
+    interpreter.stdout.on('data', (data) => {
+        ws.send(data.toString());
+    });
+
+    interpreter.on('close', () => {
+        interpreterRunning = false;
+        ws.close();
+    });
 
     ws.on('message', (message) => {
         clearTimeout(timeoutId);
@@ -74,7 +87,7 @@ wss.on('connection', (ws) => {
             interpreter.stdout.on('data', (data) => {
                 ws.send(data.toString());
             });
-            
+
             interpreter.on('close', () => {
                 interpreterRunning = false;
                 ws.close();
