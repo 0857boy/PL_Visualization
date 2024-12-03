@@ -1,35 +1,51 @@
-# 使用 Alpine 為基礎映像
-FROM alpine:3.14
+# 使用更小的基礎映像進行構建
+FROM alpine:3.14 AS build
 
 # 安裝必要的工具
 RUN apk add --no-cache \
     g++ \
-    nodejs \
-    npm
+    openssl
+
+# 創建目錄來存放憑證
+RUN mkdir -p /app
+
+# 生成自簽名 SSL 憑證
+RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /app/server.key -out /app/server.crt -subj "/CN=localhost"
 
 # 將我們的 C++ interpreter 的源碼添加到 Docker 映像中
 ADD ./InterpreterOurScheme.cpp /app/InterpreterOurScheme.cpp
-ADD ./server.js /app/server.js
 
 # 編譯我們的 C++ interpreter
 WORKDIR /app
 RUN g++ -o InterpreterOurScheme InterpreterOurScheme.cpp
 
-# 刪除原始碼
-RUN rm InterpreterOurScheme.cpp
+# 使用更小的基礎映像進行運行
+FROM node:14-alpine
 
-# 設定檔案為唯執行
-RUN chmod 111 InterpreterOurScheme
+# 創建目錄來存放應用程式
+RUN mkdir -p /app
 
-# 將你的 Node.js 應用程式的依賴資訊添加到 Docker 映像中
+# 從構建階段複製編譯好的文件和憑證
+COPY --from=build /app/InterpreterOurScheme /app/InterpreterOurScheme
+COPY --from=build /app/server.key /app/server.key
+COPY --from=build /app/server.crt /app/server.crt
+
+# 將 Node.js 應用程式的源碼添加到 Docker 映像中
+ADD ./server.js /app/server.js
 ADD package.json /app/package.json
 ADD package-lock.json /app/package-lock.json
+
+# 設定工作目錄
+WORKDIR /app
 
 # 安裝 Node.js 的依賴
 RUN npm install
 
 # 安裝 pm2
 RUN npm install -g pm2
+
+# 設定檔案為唯執行
+RUN chmod 111 /app/InterpreterOurScheme
 
 # 暴露你的應用程式使用的端口
 EXPOSE 3000

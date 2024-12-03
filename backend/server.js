@@ -1,12 +1,20 @@
 const express = require('express');
 const { spawn } = require('child_process');
+const fs = require('fs');
+const https = require('https');
 const WebSocket = require('ws');
 const app = express();
 const port = 3000;
 
+// 加載 SSL 憑證
+const privateKey = fs.readFileSync('/app/server.key', 'utf8');
+const certificate = fs.readFileSync('/app/server.crt', 'utf8');
+const credentials = { key: privateKey, cert: certificate };
+
 app.use(express.json());
 
-const wss = new WebSocket.Server({ noServer: true });
+const server = https.createServer(credentials, app);
+const wss = new WebSocket.Server({ server });
 
 let connections = 0;
 const maxConnections = 300; // 設定最大連線數量
@@ -71,8 +79,6 @@ wss.on('connection', (ws) => {
                 interpreterRunning = false;
                 ws.close();
             });
-
-            
         }
 
         if (ws.readyState === WebSocket.OPEN && interpreterRunning) {
@@ -92,12 +98,6 @@ wss.on('connection', (ws) => {
     });
 });
 
-const server = app.listen(port, () => {
-    console.log(`Server is running at http://localhost:${port}`);
-});
-
-server.on('upgrade', (request, socket, head) => {
-    wss.handleUpgrade(request, socket, head, (ws) => {
-        wss.emit('connection', ws, request);
-    });
+server.listen(port, () => {
+    console.log(`Server is running at https://localhost:${port}`);
 });
