@@ -8,7 +8,8 @@ RUN apk add --no-cache \
     npm
 
 # 將我們的 C++ interpreter 的源碼添加到 Docker 映像中
-ADD ./InterpreterOurScheme.cpp /app
+ADD ./InterpreterOurScheme.cpp /app/InterpreterOurScheme.cpp
+ADD ./server.js /app/server.js
 
 # 編譯我們的 C++ interpreter
 WORKDIR /app
@@ -34,4 +35,4 @@ RUN npm install -g pm2
 EXPOSE 3000
 
 # 當 Docker 容器啟動時，啟動我們的網頁伺服器
-CMD ["pm2-runtime", "start", "server.js", "--instances", "max", "--no-daemon"]
+CMD ["pm2-runtime", "start", "server.js", "--instances", "max"]

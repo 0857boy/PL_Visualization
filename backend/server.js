@@ -53,6 +53,8 @@ wss.on('connection', (ws) => {
                 //     interpreter = spawn('sh', ['-c', `ulimit -v ${memoryLimit}; ./InterpreterOurC`]);
                 //     break;
                 default:
+                    interpreter = spawn('sh', ['-c', `ulimit -v ${memoryLimit}; ./InterpreterOurScheme`]);
+                    break;
                     ws.send('Unknown interpreter type.\n');
                     ws.close();
                     return;
@@ -61,14 +63,16 @@ wss.on('connection', (ws) => {
             currentInterpreterType = interpreterType;
             interpreterRunning = true;
 
+            interpreter.stdout.on('data', (data) => {
+                ws.send(data.toString());
+            });
+            
             interpreter.on('close', () => {
                 interpreterRunning = false;
                 ws.close();
             });
 
-            interpreter.stdout.on('data', (data) => {
-                ws.send(data.toString());
-            });
+            
         }
 
         if (ws.readyState === WebSocket.OPEN && interpreterRunning) {
