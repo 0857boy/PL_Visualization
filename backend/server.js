@@ -24,6 +24,7 @@ wss.on('connection', (ws) => {
 
     let interpreter;
     let interpreterRunning = false;
+    let currentInterpreterType = null;
     let timeoutId = setTimeout(() => {
         ws.close();
     }, timeout);
@@ -36,6 +37,12 @@ wss.on('connection', (ws) => {
 
         const parsedMessage = JSON.parse(message);
         const { interpreterType, payload } = parsedMessage;
+
+        // 如果接收到不同的 interpreterType，關閉舊的Interpreter並啟動新的解釋器
+        if (interpreterRunning && currentInterpreterType !== interpreterType) {
+            interpreter.kill();
+            interpreterRunning = false;
+        }
 
         if (!interpreterRunning) {
             switch (interpreterType) {
@@ -51,6 +58,7 @@ wss.on('connection', (ws) => {
                     return;
             }
 
+            currentInterpreterType = interpreterType;
             interpreterRunning = true;
 
             interpreter.on('close', () => {
