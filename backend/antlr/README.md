@@ -15,3 +15,11 @@
 ## 如何運行測試
 1. 將測試數據放入 `tests/`。
 2. 執行腳本：`./run-tests.sh`。
+
+## grammar 生成語法指令
+```bash
+antlr4 -Dlanguage=Python3 -o generated/OurScheme -no-listener -visitor grammars/OurScheme.g4
+```
+
+## 引用Interpreter
+[GGORZ10227216/OurScheme](https://github.com/GGORZ10227216/OurScheme)

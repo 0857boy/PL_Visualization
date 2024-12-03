@@ -1,0 +1,37 @@
+# 使用 Alpine 為基礎映像
+FROM alpine:3.14
+
+# 安裝必要的工具
+RUN apk add --no-cache \
+    g++ \
+    nodejs \
+    npm
+
+# 將我們的 C++ interpreter 的源碼添加到 Docker 映像中
+ADD ./InterpreterOurScheme.cpp /app
+
+# 編譯我們的 C++ interpreter
+WORKDIR /app
+RUN g++ -o InterpreterOurScheme InterpreterOurScheme.cpp
+
+# 刪除原始碼
+RUN rm InterpreterOurScheme.cpp
+
+# 設定檔案為唯執行
+RUN chmod 111 InterpreterOurScheme
+
+# 將你的 Node.js 應用程式的依賴資訊添加到 Docker 映像中
+ADD package.json /app/package.json
+ADD package-lock.json /app/package-lock.json
+
+# 安裝 Node.js 的依賴
+RUN npm install
+
+# 安裝 pm2
+RUN npm install -g pm2
+
+# 暴露你的應用程式使用的端口
+EXPOSE 3000
+
+# 當 Docker 容器啟動時，啟動我們的網頁伺服器
+CMD ["pm2-runtime", "start", "server.js", "--instances", "max", "--no-daemon"]
