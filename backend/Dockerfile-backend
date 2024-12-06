@@ -6,11 +6,8 @@ RUN apk add --no-cache \
     g++ \
     openssl
 
-# 創建目錄來存放憑證
+# 創建目錄來存放應用程式
 RUN mkdir -p /app
-
-# 生成自簽名 SSL 憑證
-RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /app/server.key -out /app/server.crt -subj "/CN=localhost"
 
 # 將我們的 C++ interpreter 的源碼添加到 Docker 映像中
 ADD ./InterpreterOurScheme.cpp /app/InterpreterOurScheme.cpp
@@ -25,10 +22,8 @@ FROM node:14-alpine
 # 創建目錄來存放應用程式
 RUN mkdir -p /app
 
-# 從構建階段複製編譯好的文件和憑證
+# 從構建階段複製編譯好的文件
 COPY --from=build /app/InterpreterOurScheme /app/InterpreterOurScheme
-COPY --from=build /app/server.key /app/server.key
-COPY --from=build /app/server.crt /app/server.crt
 
 # 將 Node.js 應用程式的源碼添加到 Docker 映像中
 ADD ./server.js /app/server.js

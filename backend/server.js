@@ -55,7 +55,7 @@ wss.on('connection', (ws) => {
         const parsedMessage = JSON.parse(message);
         const { interpreterType, payload } = parsedMessage;
 
-        // 如果接收到不同的 interpreterType，關閉舊的Interpreter並啟動新的解釋器
+        // 如果接收到不同的 interpreterType，關閉舊的Interpreter並啟動新的Interpreter
         if (interpreterRunning && currentInterpreterType !== interpreterType) {
             interpreter.kill();
             interpreterRunning = false;
@@ -66,7 +66,7 @@ wss.on('connection', (ws) => {
                 case 'OurScheme':
                     interpreter = spawn('sh', ['-c', `ulimit -v ${memoryLimit}; ./InterpreterOurScheme`]);
                     break;
-                // case 'OurC':  // 未來可以加入OurC語言的解釋器
+                // case 'OurC':  // 未來可以加入OurC語言的Interpreter
                 //     interpreter = spawn('sh', ['-c', `ulimit -v ${memoryLimit}; ./InterpreterOurC`]);
                 //     break;
                 default:
