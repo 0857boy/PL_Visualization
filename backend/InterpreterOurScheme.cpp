@@ -3360,6 +3360,7 @@ Token * EvalSExp( Token * root, int level, map<string,TokenPtr> * localDefMap ) 
 } // EvalSExp()
 
 int main() {
+  setvbuf(stdout, NULL, _IONBF, 0); // 禁用緩衝
   /*
   Entry point here.
   */
