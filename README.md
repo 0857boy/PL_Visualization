@@ -76,6 +76,43 @@
 │   ├── package.json
 │   └── server.js
 ├── changes.log
+├── frontend
+│   └── quasar
+│       ├── README.md
+│       ├── eslint.config.js
+│       ├── index.html
+│       ├── jsconfig.json
+│       ├── package-lock.json
+│       ├── package.json
+│       ├── postcss.config.js
+│       ├── public
+│       │   ├── favicon.ico
+│       │   └── icons
+│       │       ├── favicon-128x128.png
+│       │       ├── favicon-16x16.png
+│       │       ├── favicon-32x32.png
+│       │       └── favicon-96x96.png
+│       ├── quasar.config.js
+│       └── src
+│           ├── App.vue
+│           ├── assets
+│           │   └── quasar-logo-vertical.svg
+│           ├── boot
+│           ├── components
+│           │   ├── EssentialLink.vue
+│           │   ├── TextArea.vue
+│           │   └── WebsocketComponent.vue
+│           ├── css
+│           │   ├── app.scss
+│           │   └── quasar.variables.scss
+│           ├── layouts
+│           │   └── MainLayout.vue
+│           ├── pages
+│           │   ├── ErrorNotFound.vue
+│           │   └── IndexPage.vue
+│           └── router
+│               ├── index.js
+│               └── routes.js
 └── scripts
     └── update_readme.py
 ```
