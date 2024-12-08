@@ -32,3 +32,9 @@ build/
 ### VS Code ###
 .vscode/
 .antlr/
+
+### npm ###
+node_modules/
+
+### Antlr ###
+generated/
