@@ -11,10 +11,12 @@ RUN mkdir -p /app
 
 # 將我們的 C++ interpreter 的源碼添加到 Docker 映像中
 ADD ./InterpreterOurScheme.cpp /app/InterpreterOurScheme.cpp
+ADD ./InterpreterOurC.cpp /app/InterpreterOurC.cpp
 
 # 編譯我們的 C++ interpreter
 WORKDIR /app
 RUN g++ -o InterpreterOurScheme InterpreterOurScheme.cpp
+RUN g++ -o InterpreterOurC InterpreterOurC.cpp
 
 # 使用更小的基礎映像進行運行
 FROM node:14-alpine
@@ -24,6 +26,7 @@ RUN mkdir -p /app
 
 # 從構建階段複製編譯好的文件
 COPY --from=build /app/InterpreterOurScheme /app/InterpreterOurScheme
+COPY --from=build /app/InterpreterOurC /app/InterpreterOurC
 
 # 將 Node.js 應用程式的源碼添加到 Docker 映像中
 ADD ./server.js /app/server.js
@@ -41,6 +44,7 @@ RUN npm install -g pm2
 
 # 設定檔案為唯執行
 RUN chmod 111 /app/InterpreterOurScheme
+RUN chmod 111 /app/InterpreterOurC
 
 # 暴露你的應用程式使用的端口
 EXPOSE 3000
