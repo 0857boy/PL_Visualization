@@ -30,5 +30,6 @@
 - `package.json`：列出了後端服務所需的依賴項。
 
 ## 引用Interpreter
+**setvbuf(stdout, NULL, _IONBF, 0); // 禁用緩衝區**
 [GGORZ10227216/OurScheme](https://github.com/GGORZ10227216/OurScheme)  
 [sha310139/OurC-interpreter](https://github.com/sha310139/OurC-interpreter)

@@ -5707,6 +5707,7 @@ void Parser::Unsigned_Unary_Exp_v( string & curType, double & returnValue, strin
 
 
 int main() {
+  setvbuf(stdout, NULL, _IONBF, 0); // 禁用緩衝區
   Parser parser;
   parser.Init();
   int uTestNum = 0 ;
