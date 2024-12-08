@@ -20,6 +20,3 @@
 ```bash
 antlr4 -Dlanguage=Python3 -o generated/OurScheme -no-listener -visitor grammars/OurScheme.g4
 ```
-
-## 引用Interpreter
-[GGORZ10227216/OurScheme](https://github.com/GGORZ10227216/OurScheme)
