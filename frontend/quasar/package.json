@@ -1,8 +1,8 @@
 {
   "name": "quasar-project",
   "version": "0.0.1",
-  "description": "PL 可視化系統是一個基於 Quasar 和 Vue 的應用，用於程式語言的可視化和執行追蹤。",
-  "productName": "PL 可視化系統",
+  "description": "PL 系統是一個基於 Quasar 和 Vue 的應用，用於程式語言的可視化和執行追蹤。",
+  "productName": "PL 系統",
   "author": "Joe <joe3727@gmail.com>",
   "type": "module",
   "private": true,
