@@ -1,50 +1,38 @@
 <template>
-  <WebSocketComponent v-slot="{ isConnected: wsConnected, sendMessage }" @message="updateOutput">
+  <WebSocketComponent v-slot="{ isConnected: wsConnected, sendMessage, connect, disconnect, connecting }"
+    @message="updateOutput" @connected="handleConnected" @disconnected="handleDisconnected">
     <q-page class="q-pa-md">
-      <div class="row q-col-gutter-md">
-        <div class="col-6">
-          <TextArea :initialText="input" :title="inputTitle" @update:text="updateInput" />
-          <q-input filled v-model="code" label="輸入程式碼" type="textarea" autogrow class="q-mt-sm">
-            <q-tooltip anchor="bottom right" self="top middle">
-              輸入你的程式碼，然後點擊需要的功能按鈕
-            </q-tooltip>
-          </q-input>
-          <div class="q-mt-sm">
-            <q-btn-group push>
-              <q-select
-                filled
-                v-model="interpreterType"
-                :options="interpreterOptions"
-                label="Type"
-                class="q-mr-sm"
-                :disable="isInterpreterTypeLocked"
-              >
-                <q-tooltip anchor="bottom right" self="top middle">
-                  選擇Interpreter類型
-                </q-tooltip>
-              </q-select>
-              <q-btn icon="visibility" @click="visualizeAST(sendMessage)" color="secondary" round>
-                <q-tooltip anchor="bottom middle" self="top middle">
-                  可視化 AST
-                </q-tooltip>
+      <div class="row q-col-gutter-md" style="text-align: center">
+        <div class="col-12">
+          <q-btn-group push>
+            <q-select filled v-model="interpreterType" :options="interpreterOptions" label="文法" class="q-mr-sm"
+              :disable="isInterpreterTypeLocked">
+              <q-tooltip anchor="bottom right" self="top middle"> 選擇Interpreter文法 </q-tooltip>
+            </q-select>
+            <template v-if="wsConnected">
+              <q-btn icon="link_off" @click="disconnect" color="red" round>
+                <q-tooltip anchor="bottom middle" self="top middle"> 中斷連線 </q-tooltip>
               </q-btn>
-              <template v-if="wsConnected">
-                <q-btn icon="send" @click="executeCode(sendMessage)" color="primary" round>
-                  <q-tooltip anchor="bottom middle" self="top middle">
-                    發送程式碼
-                  </q-tooltip>
+            </template>
+            <template v-else>
+              <q-btn icon="link" @click="() => connect(interpreterType)" color="primary" round v-if="!connecting">
+                <q-tooltip anchor="bottom middle" self="top middle"> 連線到Interpreter </q-tooltip>
+              </q-btn>
+              <q-spinner v-else color="primary" size="md" />
+            </template>
+          </q-btn-group>
+          <div class="col-12">
+            <q-input filled v-model="code" label="輸入程式碼" type="textarea" autogrow class="q-mt-sm">
+              <template v-slot:append>
+                <q-btn v-if="wsConnected" icon="play_arrow" @click="executeCode(sendMessage)" color="green" round>
+                  <q-tooltip anchor="bottom middle" self="top middle"> 執行程式碼 </q-tooltip>
                 </q-btn>
               </template>
-              <template v-else>
-                <div class="q-mr-sm">
-                  <q-skeleton type="circle" />
-                  <q-tooltip anchor="bottom middle" self="top middle">
-                    websocket 未連線，請稍後再試
-                  </q-tooltip>
-                </div>
-              </template>
-            </q-btn-group>
+            </q-input>
           </div>
+        </div>
+        <div class="col-6">
+          <TextArea :initialText="input" :title="inputTitle" @update:text="updateInput" />
         </div>
         <div class="col-6">
           <TextArea :initialText="output" :title="outputTitle" readonly />
@@ -55,9 +43,12 @@
 </template>
 
 <script setup>
-import { ref, watch, nextTick } from 'vue'
+import { ref } from 'vue'
+import { useQuasar } from 'quasar'
 import TextArea from 'components/TextArea.vue'
 import WebSocketComponent from 'components/WebSocketComponent.vue'
+
+const $q = useQuasar()
 
 const code = ref('')
 const output = ref('')
@@ -74,12 +65,11 @@ const executeCode = (sendMessage) => {
     alert('必須選擇一個Interpreter類型')
     return
   }
-  isInterpreterTypeLocked.value = true
   code.value += '\n' // 添加換行符
   input.value += code.value
   const message = {
     interpreterType: interpreterType.value,
-    payload: code.value
+    payload: code.value,
   }
   sendMessage(JSON.stringify(message))
   code.value = '' // 清空輸入程式碼
@@ -93,13 +83,37 @@ const updateOutput = (message) => {
   output.value += message // 將 WebSocket 回傳的訊息添加到 output
 }
 
-// 監聽 input 和 output 的變化，並滾動到頁面底部
-const scrollToBottom = () => {
-  nextTick(() => {
-    window.scrollTo(-1, document.body.scrollHeight)
+const lockInterpreterType = () => {
+  isInterpreterTypeLocked.value = true
+}
+
+const unlockInterpreterType = () => {
+  isInterpreterTypeLocked.value = false
+}
+
+const clearInputOutput = () => {
+  input.value = ''
+  output.value = ''
+}
+
+const handleConnected = () => {
+  lockInterpreterType()
+  clearInputOutput()
+  $q.notify({
+    type: 'positive',
+    message: '連線成功',
+    timeout: 1500,
+    position: 'top',
   })
 }
 
-watch(input, scrollToBottom)
-watch(output, scrollToBottom)
+const handleDisconnected = () => {
+  unlockInterpreterType()
+  $q.notify({
+    type: 'warning',
+    message: '連線取消',
+    timeout: 1500,
+    position: 'top',
+  })
+}
 </script>

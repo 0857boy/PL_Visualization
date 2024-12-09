@@ -1,15 +1,16 @@
 <template>
   <div>
-    <slot :isConnected="isConnected" :sendMessage="sendMessage"></slot>
+    <slot :isConnected="isConnected" :sendMessage="sendMessage" :connect="connect" :disconnect="disconnect" :connecting="connecting"></slot>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, nextTick, defineEmits } from 'vue'
+import { ref, onUnmounted, nextTick, defineEmits } from 'vue'
 
-const emit = defineEmits(['message'])
+const emit = defineEmits(['message', 'connected', 'disconnected'])
 
 const isConnected = ref(false)
+const connecting = ref(false)
 let socket
 
 const sendMessage = (message) => {
@@ -18,7 +19,9 @@ const sendMessage = (message) => {
   }
 }
 
-onMounted(async () => {
+const connect = async (interpreterType) => {
+  console.log('interpreterType:', interpreterType)
+  connecting.value = true
   await nextTick()
   const hostname = window.location.hostname
   const wsUrl = `ws://${hostname}:7090`
@@ -27,22 +30,39 @@ onMounted(async () => {
   socket.onopen = () => {
     console.log('WebSocket connection established')
     isConnected.value = true
+    connecting.value = false
+    emit('connected')
+    
+    // 發送 interpreter type
+    if (interpreterType) {
+      sendMessage(JSON.stringify({ interpreterType: interpreterType, payload: null }))
+    }
   }
 
   socket.onclose = () => {
     console.log('WebSocket connection closed')
     isConnected.value = false
+    connecting.value = false
+    emit('disconnected')
   }
 
   socket.onerror = (error) => {
     console.error('WebSocket error:', error)
+    connecting.value = false
+    emit('disconnected')
   }
 
   socket.onmessage = (event) => {
     console.log('WebSocket message received:', event.data)
     emit('message', event.data)
   }
-})
+}
+
+const disconnect = () => {
+  if (socket) {
+    socket.close()
+  }
+}
 
 onUnmounted(() => {
   if (socket) {

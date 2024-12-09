@@ -4,7 +4,7 @@
       <q-toolbar>
 
         <q-toolbar-title>
-          PL 可視化系統
+          PL
         </q-toolbar-title>
 
         <q-space />

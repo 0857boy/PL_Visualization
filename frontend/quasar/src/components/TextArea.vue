@@ -3,14 +3,7 @@
     <q-card-section>
       <div class="text-h6">{{ title }}</div>
       <q-btn flat round icon="download" class="absolute-top-right q-mt-sm q-mr-sm" @click="exportText" />
-    </q-card-section>
-    <q-card-section>
       <q-input v-model="text" readonly filled autogrow type="textarea" class="wrap" ref="textInput" />
-      <q-icon name="info" class="absolute-top-right q-mt-sm q-mr-sm">
-        <q-tooltip anchor="bottom middle" self="top middle">
-          此文字框會自動追加新內容
-        </q-tooltip>
-      </q-icon>
     </q-card-section>
   </q-card>
 </template>
