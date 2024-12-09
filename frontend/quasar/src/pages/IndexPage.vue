@@ -4,8 +4,8 @@
     <q-page class="q-pa-md">
       <div class="row q-col-gutter-md" style="text-align: center">
         <div class="col-12">
-          <q-btn-group push>
-            <q-select filled v-model="interpreterType" :options="interpreterOptions" label="文法" class="q-mr-sm"
+          <q-btn-group push >
+            <q-select filled v-model="interpreterType" :options="interpreterOptions" label="文法"
               :disable="isInterpreterTypeLocked">
               <q-tooltip anchor="bottom right" self="top middle"> 選擇Interpreter文法 </q-tooltip>
             </q-select>
@@ -18,7 +18,7 @@
               <q-btn icon="link" @click="() => connect(interpreterType)" color="primary" round v-if="!connecting">
                 <q-tooltip anchor="bottom middle" self="top middle"> 連線到Interpreter </q-tooltip>
               </q-btn>
-              <q-spinner v-else color="primary" size="md" />
+              <q-spinner v-else color="primary" />
             </template>
           </q-btn-group>
           <div class="col-12">
@@ -102,7 +102,7 @@ const handleConnected = () => {
   $q.notify({
     type: 'positive',
     message: '連線成功',
-    timeout: 1500,
+    timeout: 1200,
     position: 'top',
   })
 }
@@ -112,7 +112,7 @@ const handleDisconnected = () => {
   $q.notify({
     type: 'warning',
     message: '連線取消',
-    timeout: 1500,
+    timeout: 1200,
     position: 'top',
   })
 }
