@@ -49,5 +49,5 @@ RUN chmod 111 /app/InterpreterOurC
 # 暴露你的應用程式使用的端口
 EXPOSE 3000
 
-# 當 Docker 容器啟動時，啟動我們的網頁伺服器
+# 當 Docker 容器啟動時，啟動我們的網頁伺服器，並根據可用的 CPU 核心數量來啟動多個實例（--instances max）
 CMD ["pm2-runtime", "start", "server.js", "--instances", "max"]

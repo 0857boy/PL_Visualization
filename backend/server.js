@@ -12,7 +12,7 @@ const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
 let connections = 0;
-const maxConnections = 300; // 設定最大連線數量
+const maxConnections = 500; // 設定最大連線數量
 const timeout = 28800000; // 設定超時時間為 8 小時
 const memoryLimit = 150000; // 設定虛擬記憶體限制
 
