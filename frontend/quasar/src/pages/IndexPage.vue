@@ -23,10 +23,13 @@
           </q-btn-group>
           <div class="col-12">
             <q-input filled v-model="code" label="輸入程式碼" type="textarea" autogrow class="q-mt-sm">
-              <template v-slot:append>
-                <q-btn v-if="wsConnected" icon="play_arrow" @click="executeCode(sendMessage)" color="green" round>
-                  <q-tooltip anchor="bottom middle" self="top middle"> 執行程式碼 </q-tooltip>
-                </q-btn>
+              <template v-slot:before>
+                <template v-if="!executing">
+                  <q-btn v-if="wsConnected" icon="play_arrow" @click="executeCode(sendMessage)" color="green" round size="xs">
+                    <q-tooltip anchor="bottom middle" self="top middle"> 執行程式碼 </q-tooltip>
+                  </q-btn>
+                </template>
+                <q-spinner v-else color="green" size="xs" />
               </template>
             </q-input>
           </div>
@@ -57,6 +60,7 @@ const inputTitle = ref('Input')
 const outputTitle = ref('Output')
 const interpreterType = ref('OurScheme')
 const isInterpreterTypeLocked = ref(false)
+const executing = ref(false)
 
 const interpreterOptions = ['OurScheme', 'OurC']
 
@@ -65,6 +69,7 @@ const executeCode = (sendMessage) => {
     alert('必須選擇一個Interpreter類型')
     return
   }
+  executing.value = true
   code.value += '\n' // 添加換行符
   input.value += code.value
   const message = {
@@ -73,6 +78,9 @@ const executeCode = (sendMessage) => {
   }
   sendMessage(JSON.stringify(message))
   code.value = '' // 清空輸入程式碼
+  setTimeout(() => {
+    executing.value = false
+  }, 1000) // 模擬執行完成後的狀態變更
 }
 
 const updateInput = (newInput) => {
