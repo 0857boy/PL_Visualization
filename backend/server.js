@@ -76,10 +76,14 @@ wss.on('connection', (ws) => {
         }
 
         if (ws.readyState === WebSocket.OPEN && interpreterRunning) {
-            try {
-                interpreter.stdin.write(payload);
-            } catch (error) {
-                console.error('Failed to write to interpreter:', error);
+            if (payload !== null && payload !== undefined) {
+                try {
+                    interpreter.stdin.write(payload);
+                } catch (error) {
+                    console.error('Failed to write to interpreter:', error);
+                }
+            } else {
+                console.error('Payload is null or undefined');
             }
         }
     });
