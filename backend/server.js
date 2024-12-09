@@ -20,11 +20,13 @@ wss.on('connection', (ws) => {
     if (connections.size >= maxConnections) {
         ws.send('Too many connections. Please try again later.\n');
         ws.close();
+        console.log('Connection refused: too many connections.');
         return;
     }
 
     const id = Date.now();
     connections.set(id, { ws, lastActive: Date.now() });
+    console.log(`New connection established with ID: ${id}`);
 
     let interpreter;
     let interpreterRunning = false;
@@ -32,6 +34,7 @@ wss.on('connection', (ws) => {
     let timeoutId = setTimeout(() => {
         ws.send('Timeout.\n');
         ws.close();
+        console.log(`Connection ${id} closed due to timeout.`);
     }, timeout);
 
     ws.on('message', (message) => {
@@ -47,6 +50,7 @@ wss.on('connection', (ws) => {
             parsedMessage = JSON.parse(message);
         } catch (error) {
             ws.send('Invalid message format.\n');
+            console.log(`Invalid message format from connection ${id}: ${message}`);
             return;
         }
 
@@ -56,6 +60,7 @@ wss.on('connection', (ws) => {
         if (interpreterRunning && currentInterpreterType !== interpreterType) {
             interpreter.kill();
             interpreterRunning = false;
+            console.log(`Interpreter for connection ${id} killed due to type change.`);
         }
 
         if (!interpreterRunning) {
@@ -69,11 +74,13 @@ wss.on('connection', (ws) => {
                 default:
                     ws.send('Unknown interpreter type.\n');
                     ws.close();
+                    console.log(`Unknown interpreter type from connection ${id}: ${interpreterType}`);
                     return;
             }
 
             currentInterpreterType = interpreterType;
             interpreterRunning = true;
+            console.log(`Interpreter ${interpreterType} started for connection ${id}.`);
 
             interpreter.stdout.on('data', (data) => {
                 ws.send(data.toString());
@@ -82,12 +89,14 @@ wss.on('connection', (ws) => {
             interpreter.on('close', () => {
                 interpreterRunning = false;
                 ws.close();
+                console.log(`Interpreter for connection ${id} closed.`);
             });
 
             interpreter.on('error', (error) => {
                 console.error('Interpreter error:', error);
                 ws.send('Interpreter error.\n');
                 ws.close();
+                console.log(`Interpreter error for connection ${id}: ${error.message}`);
             });
         }
 
@@ -95,8 +104,10 @@ wss.on('connection', (ws) => {
             if (payload !== null && payload !== undefined) {
                 try {
                     interpreter.stdin.write(payload);
+                    console.log(`Payload received from connection ${id}: { ${payload} }`);
                 } catch (error) {
                     console.error('Failed to write to interpreter:', error);
+                    console.log(`Failed to write to interpreter for connection ${id}: { ${error.message} }`);
                 }
             }
         }
@@ -107,6 +118,7 @@ wss.on('connection', (ws) => {
             interpreter.kill();
         }
         connections.delete(id);
+        console.log(`Connection ${id} closed.`);
     });
 });
 
@@ -116,6 +128,7 @@ setInterval(() => {
         if (now - connection.lastActive > timeout) {
             connection.ws.close();
             connections.delete(id);
+            console.log(`Connection ${id} closed due to inactivity.`);
         }
     });
 }, 60000); // 每分鐘檢查一次，並清除超時的連線
