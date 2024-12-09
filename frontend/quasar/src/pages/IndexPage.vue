@@ -11,15 +11,22 @@
           </q-input>
           <div class="q-mt-sm">
             <q-btn-group push>
-              <q-select filled v-model="interpreterType" :options="interpreterOptions" label="Type" class="q-mr-sm">
-                <q-tooltip anchor="bottom middle" self="top middle">
+              <q-select
+                filled
+                v-model="interpreterType"
+                :options="interpreterOptions"
+                label="Type"
+                class="q-mr-sm"
+                :disable="isInterpreterTypeLocked"
+              >
+                <q-tooltip anchor="bottom right" self="top middle">
                   選擇Interpreter類型
                 </q-tooltip>
               </q-select>
               <q-btn icon="visibility" @click="visualizeAST(sendMessage)" color="secondary" round>
-                  <q-tooltip anchor="bottom middle" self="top middle">
-                    可視化 AST
-                  </q-tooltip>
+                <q-tooltip anchor="bottom middle" self="top middle">
+                  可視化 AST
+                </q-tooltip>
               </q-btn>
               <template v-if="wsConnected">
                 <q-btn icon="send" @click="executeCode(sendMessage)" color="primary" round>
@@ -57,20 +64,25 @@ const output = ref('')
 const input = ref('')
 const inputTitle = ref('Input')
 const outputTitle = ref('Output')
-const interpreterType = ref('OurScheme') // 預設為 OurScheme
+const interpreterType = ref('OurScheme')
+const isInterpreterTypeLocked = ref(false)
 
-const interpreterOptions = [
-  { label: 'OurScheme', value: 'OurScheme' },
-  // { label: 'OurC', value: 'OurC' }
-]
+const interpreterOptions = ['OurScheme', 'OurC']
 
 const executeCode = (sendMessage) => {
+  if (!interpreterType.value) {
+    alert('必須選擇一個Interpreter類型')
+    return
+  }
+  isInterpreterTypeLocked.value = true
+  code.value += '\n' // 添加換行符
   input.value += code.value
   const message = {
     interpreterType: interpreterType.value,
     payload: code.value
   }
   sendMessage(JSON.stringify(message))
+  code.value = '' // 清空輸入程式碼
 }
 
 const updateInput = (newInput) => {
