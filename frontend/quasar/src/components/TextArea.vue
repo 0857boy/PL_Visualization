@@ -1,15 +1,15 @@
 <template>
-  <q-card >
+  <q-card>
     <q-card-section class="tight-card-section">
       <div class="text-h6">{{ title }}</div>
-      <q-btn flat rounded icon="download" class="absolute-top-right q-mt-xs q-mr-xs" @click="exportText" />
-      <q-input v-model="text" readonly filled autogrow type="textarea" class="wrap tight-input" ref="textInput" />
+      <q-btn flat round icon="download" size = "sm" class="absolute-top-right q-mt-sm q-mr-sm" @click="exportText" />
+      <q-input v-model="text" readonly filled autogrow type="textarea" ref="textInput" />
     </q-card-section>
   </q-card>
 </template>
 
 <script setup>
-import { ref, watch, nextTick } from 'vue'
+import { ref, watch } from 'vue'
 
 const props = defineProps({
   initialText: {
@@ -37,11 +37,6 @@ const exportText = () => {
 
 watch(() => props.initialText, (newText) => {
   text.value = newText
-  nextTick(() => {
-    if (textInput.value) {
-      textInput.value.$el.scrollTop = textInput.value.$el.scrollHeight
-    }
-  })
 })
 
 </script>
@@ -55,16 +50,5 @@ watch(() => props.initialText, (newText) => {
 
 .tight-card-section {
   padding: 8px;
-  /* 調整內邊距 */
-}
-
-.tight-input .q-field__control {
-  padding: 4px;
-  /* 調整內邊距 */
-}
-
-.tight-input .q-field__control-container {
-  margin: 0;
-  /* 調整外邊距 */
 }
 </style>

@@ -114,6 +114,7 @@ const handleConnected = () => {
     message: '連線成功',
     timeout: 1200,
     position: 'top',
+    progress: true,
   })
 }
 
@@ -124,6 +125,8 @@ const handleDisconnected = () => {
     message: '連線中斷',
     timeout: 1200,
     position: 'top',
+    progress: true,
+    icon: 'warning'
   })
 }
 </script>
