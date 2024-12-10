@@ -18,12 +18,11 @@
               <q-btn icon="link" @click="() => connect(interpreterType)" color="primary" round v-if="!connecting">
                 <q-tooltip anchor="bottom middle" self="top middle"> 連線到Interpreter </q-tooltip>
               </q-btn>
-              <q-spinner v-else color="primary" />
+              <q-spinner-tail v-else color="grey" class="q-ma-sm" size="md" />
             </template>
           </q-btn-group>
           <div class="col-12">
-            <q-input filled v-model="code" label="輸入程式碼" type="textarea" autogrow class="q-mt-sm" :autocorrect="off"
-              :spellcheck="false">
+            <q-input filled v-model="code" label="輸入程式碼" type="textarea" autogrow class="q-mt-md" :spellcheck="false">
               <template v-slot:before>
                 <template v-if="!executing">
                   <q-btn v-if="wsConnected" icon="play_arrow" @click="executeCode(sendMessage)" color="green" round

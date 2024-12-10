@@ -1,5 +1,5 @@
 <template>
-  <q-card class="q-ma-xs">
+  <q-card >
     <q-card-section class="tight-card-section">
       <div class="text-h6">{{ title }}</div>
       <q-btn flat rounded icon="download" class="absolute-top-right q-mt-xs q-mr-xs" @click="exportText" />
