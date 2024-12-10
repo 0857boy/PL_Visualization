@@ -1,9 +1,9 @@
 <template>
-  <q-card class="q-ma-xs" style="width: 100%;">
-    <q-card-section>
+  <q-card class="q-ma-xs">
+    <q-card-section class="tight-card-section">
       <div class="text-h6">{{ title }}</div>
-      <q-btn flat round icon="download" class="absolute-top-right q-mt-sm q-mr-sm" @click="exportText" />
-      <q-input v-model="text" readonly filled autogrow type="textarea" class="wrap" ref="textInput" />
+      <q-btn flat rounded icon="download" class="absolute-top-right q-mt-xs q-mr-xs" @click="exportText" />
+      <q-input v-model="text" readonly filled autogrow type="textarea" class="wrap tight-input" ref="textInput" />
     </q-card-section>
   </q-card>
 </template>
@@ -51,5 +51,17 @@ watch(() => props.initialText, (newText) => {
   position: absolute;
   top: 0;
   right: 0;
+}
+
+.tight-card-section {
+  padding: 8px; /* 調整內邊距 */
+}
+
+.tight-input .q-field__control {
+  padding: 4px; /* 調整內邊距 */
+}
+
+.tight-input .q-field__control-container {
+  margin: 0; /* 調整外邊距 */
 }
 </style>
