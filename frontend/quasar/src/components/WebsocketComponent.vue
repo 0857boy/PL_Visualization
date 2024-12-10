@@ -27,7 +27,15 @@ const connect = async (interpreterType) => {
   const wsUrl = `ws://${hostname}:7090`
   socket = new WebSocket(wsUrl)
 
+  const timeoutId = setTimeout(() => {
+    if (!isConnected.value) {
+      socket.close()
+      connecting.value = false
+    }
+  }, 3000) // 3秒超時
+
   socket.onopen = () => {
+    clearTimeout(timeoutId)
     console.log('WebSocket connection established')
     isConnected.value = true
     connecting.value = false
@@ -40,6 +48,7 @@ const connect = async (interpreterType) => {
   }
 
   socket.onclose = () => {
+    clearTimeout(timeoutId)
     console.log('WebSocket connection closed')
     isConnected.value = false
     connecting.value = false
@@ -47,9 +56,9 @@ const connect = async (interpreterType) => {
   }
 
   socket.onerror = (error) => {
+    clearTimeout(timeoutId)
     console.error('WebSocket error:', error)
     connecting.value = false
-    emit('disconnected')
   }
 
   socket.onmessage = (event) => {
