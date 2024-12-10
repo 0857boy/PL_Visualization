@@ -54,14 +54,17 @@ watch(() => props.initialText, (newText) => {
 }
 
 .tight-card-section {
-  padding: 8px; /* 調整內邊距 */
+  padding: 8px;
+  /* 調整內邊距 */
 }
 
 .tight-input .q-field__control {
-  padding: 4px; /* 調整內邊距 */
+  padding: 4px;
+  /* 調整內邊距 */
 }
 
 .tight-input .q-field__control-container {
-  margin: 0; /* 調整外邊距 */
+  margin: 0;
+  /* 調整外邊距 */
 }
 </style>
