@@ -4,7 +4,7 @@
     <q-page class="q-pa-md">
       <div class="row q-col-gutter-md" style="text-align: center">
         <div class="col-12">
-          <q-btn-group push >
+          <q-btn-group push>
             <q-select filled v-model="interpreterType" :options="interpreterOptions" label="文法"
               :disable="isInterpreterTypeLocked">
               <q-tooltip anchor="bottom right" self="top middle"> 選擇Interpreter文法 </q-tooltip>
@@ -22,10 +22,12 @@
             </template>
           </q-btn-group>
           <div class="col-12">
-            <q-input filled v-model="code" label="輸入程式碼" type="textarea" autogrow class="q-mt-sm">
+            <q-input filled v-model="code" label="輸入程式碼" type="textarea" autogrow class="q-mt-sm" :autocorrect="off"
+              :spellcheck="false">
               <template v-slot:before>
                 <template v-if="!executing">
-                  <q-btn v-if="wsConnected" icon="play_arrow" @click="executeCode(sendMessage)" color="green" round size="xs">
+                  <q-btn v-if="wsConnected" icon="play_arrow" @click="executeCode(sendMessage)" color="green" round
+                    size="xs">
                     <q-tooltip anchor="bottom middle" self="top middle"> 執行程式碼 </q-tooltip>
                   </q-btn>
                 </template>
