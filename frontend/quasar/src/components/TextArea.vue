@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, watch, nextTick } from 'vue'
+import { ref, watch, nextTick } from 'vue'
 
 const props = defineProps({
   initialText: {
