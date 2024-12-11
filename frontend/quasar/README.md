@@ -2,6 +2,10 @@
 
 A Quasar Project
 
+## Prerequisites
+* node: v20.18.1
+* npm: 7.6.3
+
 ## Install the dependencies
 ```bash
 yarn
