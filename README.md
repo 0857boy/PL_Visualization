@@ -108,6 +108,8 @@
 │           ├── css
 │           │   ├── app.scss
 │           │   └── quasar.variables.scss
+│           ├── data
+│           │   └── quotes.js
 │           ├── layouts
 │           │   └── MainLayout.vue
 │           ├── pages
