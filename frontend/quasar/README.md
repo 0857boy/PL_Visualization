@@ -1,44 +1,41 @@
-# Quasar App (quasar-project)
+# Quasar 應用程式 (quasar-project)
 
-A Quasar Project
+一個 Quasar 專案
 
-## Prerequisites
+## 先決條件
 * node: v20.18.1
 * npm: 7.6.3
 
-## Install the dependencies
+## 安裝依賴項
 ```bash
 yarn
-# or
+# 或
 npm install
 ```
 
-### Start the app in development mode (hot-code reloading, error reporting, etc.)
+### 在開發模式下啟動應用程式 (熱代碼重載、錯誤報告等)
 ```bash
 quasar dev
 ```
 
-
-### Lint the files
+### 檢查文件
 ```bash
 yarn lint
-# or
+# 或
 npm run lint
 ```
 
-
-### Format the files
+### 格式化文件
 ```bash
 yarn format
-# or
+# 或
 npm run format
 ```
 
-
-### Build the app for production
+### 為生產環境構建應用程式
 ```bash
 quasar build
 ```
 
-### Customize the configuration
-See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js).
+### 自定義配置
+請參閱 [配置 quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js).
