@@ -18,7 +18,7 @@
         />
       </div>
       <div class="quote" v-if="quote">
-        "{{ quote }}"
+        {{ quote }}
       </div>
     </div>
     <img :src="memeUrl" alt="Random Meme" class="meme-image" />
@@ -27,6 +27,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { getQuote } from 'src/data/quotes'
 
 const memeUrl = ref('')
 const quote = ref('')
@@ -41,14 +42,8 @@ const fetchRandomMeme = async () => {
   }
 }
 
-const fetchRandomQuote = async () => {
-  try {
-    const response = await fetch('https://api.quotable.io/random')
-    const data = await response.json()
-    quote.value = data.content
-  } catch (error) {
-    console.error('Error fetching quote:', error)
-  }
+const fetchRandomQuote = () => {
+  quote.value = getQuote()
 }
 
 onMounted(() => {
