@@ -89,10 +89,12 @@
 │       ├── public
 │       │   ├── favicon.ico
 │       │   └── icons
-│       │       ├── favicon-128x128.png
-│       │       ├── favicon-16x16.png
-│       │       ├── favicon-32x32.png
-│       │       └── favicon-96x96.png
+│       │       ├── apple-touch-icon.png
+│       │       ├── favicon-96x96.png
+│       │       ├── favicon.svg
+│       │       ├── site.webmanifest
+│       │       ├── web-app-manifest-192x192.png
+│       │       └── web-app-manifest-512x512.png
 │       ├── quasar.config.js
 │       └── src
 │           ├── App.vue
