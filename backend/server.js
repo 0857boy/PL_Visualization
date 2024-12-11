@@ -13,7 +13,7 @@ const wss = new WebSocket.Server({ server });
 
 let connections = new Map(); // 用來儲存所有連線
 const maxConnections = 500; // 設定最大連線數量
-const timeout = 28800000; // 設定超時時間為 8 小時
+const timeout = 600000; // 設定連線超時10分鐘
 const memoryLimit = 150000; // 設定虛擬記憶體限制
 
 wss.on('connection', (ws) => {
