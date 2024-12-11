@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { ref, onUnmounted, nextTick, defineEmits } from 'vue'
+import { ref, onUnmounted, nextTick } from 'vue'
 
 const emit = defineEmits(['message', 'connected', 'disconnected'])
 

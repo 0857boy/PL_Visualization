@@ -1,16 +1,12 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+    <q-header elevated reveal>
       <q-toolbar>
-
         <q-toolbar-title>
           PL
         </q-toolbar-title>
-
         <q-space />
-
-        <q-btn flat round :icon="isDark ? 'dark_mode' : 'light_mode'" @click="toggleTheme" />
-
+        <q-btn flat round :icon="isDark ? 'light_mode' : 'dark_mode'" @click="toggleTheme" />
       </q-toolbar>
     </q-header>
 
