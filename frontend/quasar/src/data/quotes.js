@@ -230,7 +230,7 @@ const specialQuotes = [ // 特別名言
 export const getQuote = () => {
   const random = Math.random();
   console.log("你發現了一個彩蛋！"); 
-  if (random < 0.2) { // 20% 機率出現特別名言
+  if (random < 0.13) { // 有13%的機率出現特別名言
     console.log("恭喜你發現了一個特別名言！");
     const index = Math.floor(Math.random() * specialQuotes.length);
     return specialQuotes[index];
