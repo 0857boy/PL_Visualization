@@ -73,8 +73,8 @@
   
     node
       .append('text')
-      .attr('dy', 15)
-      .attr('x', 0)
+      .attr('dy', 3)
+      .attr('x', 30)
       .style('text-anchor', 'middle')
       .text((d) => d.data.name);
   };
