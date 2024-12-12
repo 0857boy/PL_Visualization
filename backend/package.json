@@ -11,9 +11,10 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "antlr4": "^4.13.2",
+    "cors": "^2.8.5",
     "express": "^4.19.2",
-    "ws": "^8.17.0",
-    "antlr4": "^4.13.2"
+    "ws": "^8.17.0"
   },
   "type": "module"
 }

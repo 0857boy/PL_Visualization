@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors'; // 引入 cors 模組
 import { spawn } from 'child_process';
 import fs from 'fs';
 import http from 'http';
@@ -10,6 +11,7 @@ import OurSchemeParser from './antlr/generated/OurScheme/OurSchemeParser.js';
 const app = express();
 const port = 3000;
 
+app.use(cors()); // 使用 cors 中間件
 app.use(express.json());
 
 const server = http.createServer(app);
@@ -121,6 +123,7 @@ wss.on('connection', (ws) => {
         if (interpreter) {
             interpreter.kill();
         }
+        interpreterRunning = false;
         connections.delete(id);
         console.log(`Connection ${id} closed.`);
     });
@@ -179,5 +182,5 @@ app.post('/syntax-tree', (req, res) => {
 });
 
 server.listen(port, () => {
-    console.log(`Server is running at http://localhost:${port}`);
+    console.log(`Server is running on http://localhost:${port}`);
 });
