@@ -47,12 +47,10 @@
       </div>
     </q-page>
     <q-dialog v-model="dialogVisible">
-      <q-card>
-        <q-card-section>
-          <ParseTree :parseTree="parseTree" />
-        </q-card-section>
+      <q-card flat>
+        <ParseTree :parseTree="parseTree" />
         <q-card-actions align="right">
-          <q-btn flat label="Close" color="primary" v-close-popup />
+          <q-btn label="Close" color="primary" v-close-popup />
         </q-card-actions>
       </q-card>
     </q-dialog>
