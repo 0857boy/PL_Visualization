@@ -111,6 +111,7 @@
 │           ├── boot
 │           ├── components
 │           │   ├── EssentialLink.vue
+│           │   ├── ParseTree.vue
 │           │   ├── TextArea.vue
 │           │   └── WebsocketComponent.vue
 │           ├── css
