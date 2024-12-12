@@ -29,6 +29,9 @@
                     size="xs">
                     <q-tooltip anchor="bottom middle" self="top middle"> 執行程式碼 </q-tooltip>
                   </q-btn>
+                  <q-btn v-if="wsConnected" icon="visibility" @click="sendPostRequest" color="blue" round size="xs">
+                    <q-tooltip anchor="bottom middle" self="top middle"> 發送 POST 請求 </q-tooltip>
+                  </q-btn>
                 </template>
                 <q-spinner v-else color="grey" size="xs" />
               </template>
@@ -43,6 +46,16 @@
         </div>
       </div>
     </q-page>
+    <q-dialog v-model="dialogVisible">
+      <q-card>
+        <q-card-section>
+          <ParseTree :parseTree="parseTree" />
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat label="Close" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </WebSocketComponent>
 </template>
 
@@ -51,6 +64,8 @@ import { ref } from 'vue'
 import { useQuasar } from 'quasar'
 import TextArea from 'components/TextArea.vue'
 import WebSocketComponent from 'components/WebSocketComponent.vue'
+import ParseTree from 'components/ParseTree.vue'
+import axios from 'axios'
 
 const $q = useQuasar()
 
@@ -62,6 +77,8 @@ const outputTitle = ref('Output')
 const interpreterType = ref('OurScheme')
 const isInterpreterTypeLocked = ref(false)
 const executing = ref(false)
+const dialogVisible = ref(false)
+const parseTree = ref('')
 
 const interpreterOptions = ['OurScheme', 'OurC']
 
@@ -127,5 +144,25 @@ const handleDisconnected = () => {
     progress: true,
     icon: 'warning'
   })
+}
+
+const sendPostRequest = async () => {
+  try {
+    const response = await axios.post('http://localhost:7090/syntax-tree', {
+      payload: code.value,
+      interpreterType: interpreterType.value
+    })
+    parseTree.value = response.data.parseTree
+    dialogVisible.value = true
+  } catch (error) {
+    console.error('Error sending POST request:', error)
+    $q.notify({
+      type: 'negative',
+      message: 'POST 請求失敗',
+      timeout: 1200,
+      position: 'top',
+      progress: true,
+    })
+  }
 }
 </script>
