@@ -1,15 +1,19 @@
-const express = require('express');
-const { spawn } = require('child_process');
-const fs = require('fs');
-const http = require('http');
-const WebSocket = require('ws');
+import express from 'express';
+import { spawn } from 'child_process';
+import fs from 'fs';
+import http from 'http';
+import WebSocket, { WebSocketServer } from 'ws';
+import antlr4 from 'antlr4';
+import OurSchemeLexer from './antlr/generated/OurScheme/OurSchemeLexer.js';
+import OurSchemeParser from './antlr/generated/OurScheme/OurSchemeParser.js';
+
 const app = express();
 const port = 3000;
 
 app.use(express.json());
 
 const server = http.createServer(app);
-const wss = new WebSocket.Server({ server });
+const wss = new WebSocketServer({ server });
 
 let connections = new Map(); // 用來儲存所有連線
 const maxConnections = 500; // 設定最大連線數量
@@ -132,6 +136,47 @@ setInterval(() => {
         }
     });
 }, 60000); // 每分鐘檢查一次，並清除超時的連線
+
+// 新增的路由來處理語法樹的生成和回傳
+app.post('/syntax-tree', (req, res) => {
+    const { payload, interpreterType } = req.body;
+    if (!payload || !interpreterType) {
+        return res.status(400).send('payload and interpreterType are required.');
+    }
+
+    try {
+        let chars, lexer, tokens, parser;
+        switch (interpreterType) {
+            case 'OurScheme':
+                chars = new antlr4.InputStream(payload);
+                lexer = new OurSchemeLexer(chars);
+                tokens = new antlr4.CommonTokenStream(lexer);
+                parser = new OurSchemeParser(tokens);
+                parser.buildParseTrees = true;
+                break;
+            // case 'OurC':
+            //     chars = new antlr4.InputStream(code);
+            //     lexer = new OurCLexer(chars);
+            //     tokens = new antlr4.CommonTokenStream(lexer);
+            //     parser = new OurCParser(tokens);
+            //     parser.buildParseTrees = true;
+            //     break;
+            default:
+                return res.status(400).send('Unknown interpreter type.');
+        }
+
+        const tree = parser.program();
+
+        // 將解析樹轉換為 JSON 格式
+        const treeJson = tree.toStringTree(parser.ruleNames);
+
+        console.log(treeJson); // 打印解析樹
+        res.json({ parseTree: treeJson });
+    } catch (error) {
+        console.error('Error generating syntax tree:', error);
+        res.status(500).send('Error generating syntax tree.');
+    }
+});
 
 server.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);

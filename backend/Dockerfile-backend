@@ -9,9 +9,8 @@ RUN apk add --no-cache \
 # 創建目錄來存放應用程式
 RUN mkdir -p /app
 
-# 將我們的 C++ interpreter 的源碼添加到 Docker 映像中
-ADD ./InterpreterOurScheme.cpp /app/InterpreterOurScheme.cpp
-ADD ./InterpreterOurC.cpp /app/InterpreterOurC.cpp
+# 將所有檔案複製到 Docker 映像中
+ADD . /app
 
 # 編譯我們的 C++ interpreter
 WORKDIR /app
@@ -19,7 +18,7 @@ RUN g++ -o InterpreterOurScheme InterpreterOurScheme.cpp
 RUN g++ -o InterpreterOurC InterpreterOurC.cpp
 
 # 使用更小的基礎映像進行運行
-FROM node:14-alpine
+FROM node:16-alpine
 
 # 創建目錄來存放應用程式
 RUN mkdir -p /app
@@ -27,6 +26,9 @@ RUN mkdir -p /app
 # 從構建階段複製編譯好的文件
 COPY --from=build /app/InterpreterOurScheme /app/InterpreterOurScheme
 COPY --from=build /app/InterpreterOurC /app/InterpreterOurC
+
+# 將antlr資料夾 複製到Docker映像中
+COPY --from=build /app/antlr /app/antlr
 
 # 將 Node.js 應用程式的源碼添加到 Docker 映像中
 ADD ./server.js /app/server.js
