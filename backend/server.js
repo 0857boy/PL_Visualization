@@ -140,6 +140,17 @@ setInterval(() => {
     });
 }, 60000); // 每分鐘檢查一次，並清除超時的連線
 
+// 將解析樹轉換為 JSON 格式的函數
+const tree_to_json = (tree, ruleNames) => {
+    if (tree.children === undefined || tree.children.length === 0) {
+        return { name: tree.getText() };
+    }
+    return {
+        name: ruleNames[tree.ruleIndex],
+        children: tree.children.map(child => tree_to_json(child, ruleNames))
+    };
+};
+
 // 新增的路由來處理語法樹的生成和回傳
 app.post('/syntax-tree', (req, res) => {
     const { payload, interpreterType } = req.body;
@@ -171,7 +182,7 @@ app.post('/syntax-tree', (req, res) => {
         const tree = parser.program();
 
         // 將解析樹轉換為 JSON 格式
-        const treeJson = tree.toStringTree(parser.ruleNames);
+        const treeJson = tree_to_json(tree, parser.ruleNames);
 
         console.log(treeJson); // 打印解析樹
         res.json({ parseTree: treeJson });
