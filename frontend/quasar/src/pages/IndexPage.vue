@@ -22,7 +22,8 @@
             </template>
           </q-btn-group>
           <div class="col-12">
-            <q-input filled v-model="code" label="輸入程式碼" type="textarea" autogrow class="q-mt-md" :spellcheck="false" :disable="!wsConnected || executing">
+            <q-input filled v-model="code" label="輸入程式碼" type="textarea" autogrow class="q-mt-md" :spellcheck="false"
+              :disable="!wsConnected || executing">
               <template v-slot:before>
                 <template v-if="!executing">
                   <q-btn v-if="wsConnected" icon="play_arrow" @click="executeCode(sendMessage)" color="green" round
@@ -30,7 +31,7 @@
                     <q-tooltip anchor="bottom middle" self="top middle"> 執行程式碼 </q-tooltip>
                   </q-btn>
                   <q-btn v-if="wsConnected" icon="visibility" @click="sendPostRequest" color="blue" round size="xs">
-                    <q-tooltip anchor="bottom middle" self="top middle"> 發送 POST 請求 </q-tooltip>
+                    <q-tooltip anchor="bottom middle" self="top middle"> 可視化分析 </q-tooltip>
                   </q-btn>
                 </template>
                 <q-spinner v-else color="grey" size="xs" />
@@ -50,7 +51,7 @@
       <q-card flat>
         <ParseTree :parseTree="parseTree" />
         <q-card-actions align="right">
-          <q-btn label="Close" color="primary" v-close-popup />
+          <q-btn label="關閉" color="primary" v-close-popup />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -147,7 +148,7 @@ const handleDisconnected = () => {
 const sendPostRequest = async () => {
   try {
     const response = await axios.post('http://localhost:7090/syntax-tree', {
-      payload: code.value,
+      payload: code.value + '\n',
       interpreterType: interpreterType.value
     })
     parseTree.value = response.data.parseTree
