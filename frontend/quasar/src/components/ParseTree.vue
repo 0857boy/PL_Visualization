@@ -1,10 +1,8 @@
 <template>
-    <q-card>
-        <q-card-section>
-            <q-btn icon="fullscreen" @click="toggleFullScreen" class="fullscreen-btn" />
-            <div ref="treeContainer" class="tree-container"></div>
-        </q-card-section>
-    </q-card>
+    <div class="button-container">
+        <q-btn icon="fullscreen" flat round @click="toggleFullScreen" class="fullscreen-btn" />
+    </div>
+    <div ref="treeContainer" class="tree-container"></div>
 </template>
 
 <script setup>
@@ -19,6 +17,8 @@ const props = defineProps({
 });
 
 const treeContainer = ref(null);
+const svgRef = ref(null);
+const isFullScreen = ref(false);
 
 const drawTree = (data, width, height) => {
     if (!treeContainer.value) return; // 檢查 treeContainer 是否為 null
@@ -35,7 +35,7 @@ const drawTree = (data, width, height) => {
 
     const treeLayout = d3.tree()
         .size([containerWidth - 100, containerHeight - 100])
-        .separation((a, b) => (a.parent === b.parent ? 1 : 2));
+        .separation((a, b) => (a.parent === b.parent ? 1 : 2)); // 增加節點之間的間距
 
     treeLayout(root);
 
@@ -47,6 +47,8 @@ const drawTree = (data, width, height) => {
         .style('background-color', 'white')
         .append('g')
         .attr('transform', 'translate(50,50)');
+
+    svgRef.value = svg.node().parentNode; // 保存 SVG 節點
 
     svg
         .selectAll('.link')
@@ -61,7 +63,7 @@ const drawTree = (data, width, height) => {
             .target((d) => ({ x: d.target.x, y: d.target.y - 20 })) // 調整連結的終點
         )
         .attr('fill', 'none')
-        .attr('stroke', '#555')
+        .attr('stroke', '#ccc')
         .attr('stroke-width', 1.5);
 
     const node = svg
@@ -91,10 +93,12 @@ onMounted(() => {
 const toggleFullScreen = () => {
     if (!document.fullscreenElement) {
         treeContainer.value.requestFullscreen().then(() => {
+            isFullScreen.value = true;
             drawTree(props.parseTree, window.innerWidth, window.innerHeight);
         });
     } else {
         document.exitFullscreen().then(() => {
+            isFullScreen.value = false;
             drawTree(props.parseTree);
         });
     }
@@ -108,4 +112,16 @@ watch(
         }
     },
 );
+
+document.addEventListener('fullscreenchange', () => {
+    isFullScreen.value = !!document.fullscreenElement;
+});
 </script>
+
+<style>
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}
+</style>
