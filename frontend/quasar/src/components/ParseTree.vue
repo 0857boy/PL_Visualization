@@ -86,7 +86,11 @@ const drawTree = (data, width, height) => {
 onMounted(() => {
     if (treeContainer.value) {
         drawTree(props.parseTree);
-        window.addEventListener('resize', () => drawTree(props.parseTree, treeContainer.value.clientWidth, treeContainer.value.clientHeight));
+        window.addEventListener('resize', () => {
+            if (treeContainer.value) {
+                drawTree(props.parseTree, treeContainer.value.clientWidth, treeContainer.value.clientHeight);
+            }
+        });
     }
 });
 
@@ -99,7 +103,9 @@ const toggleFullScreen = () => {
     } else {
         document.exitFullscreen().then(() => {
             isFullScreen.value = false;
-            drawTree(props.parseTree);
+            if (treeContainer.value) {
+                drawTree(props.parseTree);
+            }
         });
     }
 };

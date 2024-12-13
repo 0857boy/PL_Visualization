@@ -35,6 +35,3 @@ build/
 
 ### npm ###
 node_modules/
-
-### Antlr ###
-generated/
