@@ -79,7 +79,7 @@ const executing = ref(false)
 const dialogVisible = ref(false)
 const parseTree = ref('')
 
-const interpreterOptions = ['OurScheme', 'OurC']
+const interpreterOptions = ['OurScheme'] //, 'OurC'] 
 
 const executeCode = (sendMessage) => {
   if (!interpreterType.value) {
